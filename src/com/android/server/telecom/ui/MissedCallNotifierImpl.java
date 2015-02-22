@@ -50,14 +50,21 @@ import android.provider.Settings;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.UserHandle;
+import android.provider.CallLog;
 import android.provider.CallLog.Calls;
+import android.provider.Settings;
 import android.telecom.DisconnectCause;
 import android.telecom.PhoneAccount;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.text.BidiFormatter;
+import android.text.SpannableStringBuilder;
 import android.text.TextDirectionHeuristics;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
+import android.text.style.RelativeSizeSpan;
+
+import java.util.ArrayList;
 
 import java.lang.Override;
 import java.lang.String;
@@ -236,11 +243,18 @@ public class MissedCallNotifierImpl extends CallsManagerListenerBase implements 
 
         // Create the notification suitable for display when sensitive information is showing.
         Notification.Builder builder = new Notification.Builder(mContext);
+        if (Settings.System.getInt(mContext.getContentResolver(),
+               Settings.System.KEY_MISSED_CALL_BREATH, 0) == 1) {
+             builder.setSmallIcon(R.drawable.stat_notify_missed_call_breath)
+                .setColor(mContext.getResources().getColor(R.color.theme_color))
+                .setWhen(call.getCreationTimeMillis())
+                .setContentIntent(createCallLogPendingIntent())
+                .setAutoCancel(true)
+                .setDeleteIntent(createClearMissedCallsPendingIntent());
+             } else {
         builder.setSmallIcon(android.R.drawable.stat_notify_missed_call)
                 .setColor(mContext.getResources().getColor(R.color.theme_color))
                 .setWhen(call.getCreationTimeMillis())
-                .setContentTitle(mContext.getText(titleResId))
-                .setContentText(expandedText)
                 .setContentIntent(createCallLogPendingIntent())
                 .setAutoCancel(true)
                 .setDeleteIntent(createClearMissedCallsPendingIntent())
@@ -248,6 +262,7 @@ public class MissedCallNotifierImpl extends CallsManagerListenerBase implements 
                 // notification is shown on the user's lock screen and they have chosen to hide
                 // sensitive notification information.
                 .setPublicVersion(publicBuilder.build());
+             }
 
         Uri handleUri = call.getHandle();
         String handle = handleUri == null ? null : handleUri.getSchemeSpecificPart();
