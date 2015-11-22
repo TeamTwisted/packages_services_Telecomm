@@ -245,18 +245,22 @@ public class MissedCallNotifierImpl extends CallsManagerListenerBase implements 
         Notification.Builder builder = new Notification.Builder(mContext);
         if (Settings.System.getInt(mContext.getContentResolver(),
                Settings.System.KEY_MISSED_CALL_BREATH, 0) == 1) {
-             builder.setSmallIcon(R.drawable.stat_notify_missed_call_breath)
+                builder.setSmallIcon(R.drawable.stat_notify_missed_call_breath)
                 .setColor(mContext.getResources().getColor(R.color.theme_color))
                 .setWhen(call.getCreationTimeMillis())
                 .setContentIntent(createCallLogPendingIntent())
                 .setAutoCancel(true)
+		.setContentTitle(mContext.getText(titleResId))
+		.setContentText(expandedText)
                 .setDeleteIntent(createClearMissedCallsPendingIntent());
              } else {
-        builder.setSmallIcon(android.R.drawable.stat_notify_missed_call)
+                builder.setSmallIcon(android.R.drawable.stat_notify_missed_call)
                 .setColor(mContext.getResources().getColor(R.color.theme_color))
                 .setWhen(call.getCreationTimeMillis())
                 .setContentIntent(createCallLogPendingIntent())
                 .setAutoCancel(true)
+		.setContentTitle(mContext.getText(titleResId))
+		.setContentText(expandedText)
                 .setDeleteIntent(createClearMissedCallsPendingIntent())
                 // Include a public version of the notification to be shown when the missed call
                 // notification is shown on the user's lock screen and they have chosen to hide
