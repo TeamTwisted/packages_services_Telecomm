@@ -15,7 +15,7 @@
 -->
 
 <resources>
-    <style name="Theme.Telecomm.Transparent" parent="@android:style/Theme.Material.Light">
+    <style name="Theme.Telecomm.Transparent" parent="@android:style/Theme.Material.DayNight">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -25,7 +25,7 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
 
-    <style name="Theme.Telecom.DialerSettings" parent="@android:style/Theme.Material.Light">
+    <style name="Theme.Telecom.DialerSettings" parent="@android:style/Theme.Material.DayNight">
         <item name="android:actionBarStyle">@style/TelecomDialerSettingsActionBarStyle</item>
         <item name="android:actionOverflowButtonStyle">@style/TelecomDialerSettingsActionOverflowButtonStyle</item>
         <item name="android:colorPrimaryDark">@color/dialer_settings_color_dark</item>
